@@ -12,6 +12,7 @@
       --accent: #38bdf8;
       --highlight: #0ea5e9;
       --border: #334155;
+      --total-bg: #0c4a6e;
     }
     * {
       margin: 0;
@@ -23,8 +24,8 @@
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
-      padding: 2rem 1rem;
-      line-height: 1.6;
+      padding: 1.5rem 1rem;
+      line-height: 1.5;
     }
     .container {
       max-width: 800px;
@@ -32,28 +33,41 @@
     }
     header {
       text-align: center;
-      margin-bottom: 2.5rem;
+      margin-bottom: 2rem;
     }
     h1 {
-      font-size: 2.5rem;
-      margin-bottom: 0.5rem;
+      font-size: clamp(1.8rem, 6vw, 2.4rem);
+      margin-bottom: 0.4rem;
       background: linear-gradient(90deg, #38bdf8, #0ea5e9);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
+    .subtitle {
+      color: #94a3b8;
+      font-size: 1rem;
+    }
+
     .card {
       background: var(--card);
       border-radius: 1rem;
       box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-      overflow: hidden;
       border: 1px solid var(--border);
+      overflow: hidden;
+      margin-bottom: 1.5rem;
     }
+
+    .table-wrapper {
+      max-height: 55vh;           /* ← scrollable area */
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch; /* smooth scrolling on iOS */
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
     }
     th, td {
-      padding: 1.1rem 1.5rem;
+      padding: 1rem 1.25rem;
       text-align: left;
       border-bottom: 1px solid var(--border);
     }
@@ -62,80 +76,105 @@
       color: var(--accent);
       font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
+      letter-spacing: 0.04em;
+      position: sticky;
+      top: 0;
+      z-index: 2;
     }
     tr:hover {
-      background: rgba(56, 189, 248, 0.08);
+      background: rgba(56, 189, 248, 0.07);
     }
     .total-row {
       font-weight: bold;
-      background: #0c4a6e;
+      background: var(--total-bg);
+      position: sticky;
+      bottom: 0;
+      z-index: 1;
     }
     .total-row td {
-      padding: 1.3rem 1.5rem;
+      padding: 1.2rem 1.25rem;
     }
     .total-label {
       text-align: right;
     }
     .total-amount {
       color: #f0f9ff;
-      font-size: 1.4rem;
+      font-size: 1.35rem;
     }
     .category {
       color: #94a3b8;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
     }
+
+    /* Scrollbar styling */
+    .table-wrapper::-webkit-scrollbar {
+      width: 7px;
+    }
+    .table-wrapper::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    .table-wrapper::-webkit-scrollbar-thumb {
+      background: #475569;
+      border-radius: 4px;
+    }
+
     @media (max-width: 600px) {
-      th, td {
-        padding: 0.9rem 1rem;
-      }
-      h1 {
-        font-size: 2rem;
-      }
+      body { padding: 1rem 0.8rem; }
+      th, td { padding: 0.9rem 1rem; font-size: 0.96rem; }
+      .total-row td { padding: 1.1rem 1rem; }
+      .total-amount { font-size: 1.25rem; }
+      h1 { margin-bottom: 0.3rem; }
     }
   </style>
 </head>
 <body>
+
   <div class="container">
     <header>
       <h1>Monthly Expenses</h1>
-      <p>Tracking recurring costs – February 2026</p>
+      <p class="subtitle">Tracking recurring costs – February 2026</p>
     </header>
 
     <div class="card">
-      <table>
-        <thead>
-          <tr>
-            <th>Expense</th>
-            <th>Amount (AUD)</th>
-          </tr>
-        </thead>
-        <tbody id="expenses">
-          <tr><td>House (mortgage/repayments)</td><td>3800</td></tr>
-          <tr><td>Mustang (loan/payment)</td><td>1248</td></tr>
-          <tr><td>Nissan (loan/payment)</td><td>1096</td></tr>
-          <tr><td>City of Swan (council rates?)</td><td>216</td></tr>
-          <tr><td>Car registrations (approx.)</td><td>220</td></tr>
-          <tr><td>Plenti (house battery loan)</td><td>196</td></tr>
-          <tr><td>Latitude Credit Card</td><td>300</td></tr>
-          <tr><td>Nissan insurance</td><td>136</td></tr>
-          <tr><td>Qantas Health insurance (ZAC)</td><td>140</td></tr>
-          <tr><td>HBF Health insurance (NAN)</td><td>124</td></tr>
-          <tr><td>Allianz Insurance (Mustang)</td><td>176</td></tr>
-          <tr><td>RAC (house)</td><td>101</td></tr>
-          <tr><td>Another RAC (life or BMW?)</td><td>24</td></tr>
-          <tr><td>RSL lotto</td><td>30</td></tr>
-          <tr><td>Grok subscription</td><td>45</td></tr>
-          <tr><td>WiFi (Node1)</td><td>94</td></tr>
-          <tr><td>WaterCorp</td><td>160</td></tr> <!-- fill in if you know -->
-          <tr><td>GAS DIGITAL NETWORK</td><td>10</td></tr>
-          <tr><td>ChatGPT subscription</td><td>30</td></tr>
-          <tr><td>Apple Music</td><td>29</td></tr>
-          <tr><td>Telstra</td><td>291</td></tr>
-          <tr><td>Netflix</td><td>29</td></tr>
-          <tr><td>Microsoft (365?)</td><td>3</td></tr>
-        </tbody>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Expense</th>
+              <th>Amount (AUD)</th>
+            </tr>
+          </thead>
+          <tbody id="expenses">
+            <tr><td>House (mortgage/repayments)</td><td>3800</td></tr>
+            <tr><td>Mustang (loan/payment)</td><td>1248</td></tr>
+            <tr><td>Nissan (loan/payment)</td><td>1096</td></tr>
+            <tr><td>City of Swan (council rates?)</td><td>216</td></tr>
+            <tr><td>Car registrations (approx.)</td><td>220</td></tr>
+            <tr><td>Plenti (house battery loan)</td><td>196</td></tr>
+            <tr><td>Latitude Credit Card</td><td>300</td></tr>
+            <tr><td>Nissan insurance</td><td>136</td></tr>
+            <tr><td>Qantas Health insurance (ZAC)</td><td>140</td></tr>
+            <tr><td>HBF Health insurance (NAN)</td><td>124</td></tr>
+            <tr><td>Allianz Insurance (Mustang)</td><td>176</td></tr>
+            <tr><td>RAC (house)</td><td>101</td></tr>
+            <tr><td>Another RAC (life or BMW?)</td><td>24</td></tr>
+            <tr><td>RSL lotto</td><td>30</td></tr>
+            <tr><td>Grok subscription</td><td>45</td></tr>
+            <tr><td>WiFi (Node1)</td><td>94</td></tr>
+            <tr><td>WaterCorp</td><td>160</td></tr>
+            <tr><td>GAS DIGITAL NETWORK</td><td>10</td></tr>
+            <tr><td>ChatGPT subscription</td><td>30</td></tr>
+            <tr><td>Apple Music</td><td>29</td></tr>
+            <tr><td>Telstra</td><td>291</td></tr>
+            <tr><td>Netflix</td><td>29</td></tr>
+            <tr><td>Microsoft (365?)</td><td>3</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Total stays outside the scroll -->
+      <table style="width:100%; border-collapse:collapse;">
         <tfoot>
           <tr class="total-row">
             <td class="total-label">Monthly Total</td>
@@ -147,8 +186,20 @@
   </div>
 
   <script>
-    // Calculate total on page load
-    document.addEventListener('DOMContentLoaded', () => {
+    // Simple client-side password prompt (not secure – just a deterrent)
+    const PASSWORD = "zach2026";  // ← CHANGE THIS to whatever you want
+
+    function askForPassword() {
+      let input = prompt("Enter password to view expenses:");
+      if (input !== PASSWORD) {
+        alert("Incorrect password.");
+        document.body.innerHTML = "<div style='text-align:center; padding:4rem; color:#94a3b8;'><h2>Access Denied</h2><p>Refresh to try again.</p></div>";
+        throw new Error("Password failed"); // stop further execution
+      }
+    }
+
+    // Calculate total
+    function calculateTotal() {
       const rows = document.querySelectorAll('#expenses tr');
       let sum = 0;
 
@@ -156,14 +207,21 @@
         const amountCell = row.querySelector('td:nth-child(2)');
         if (amountCell) {
           const text = amountCell.textContent.trim();
-          // Skip rows with ?? or non-numeric
-          if (text !== '??' && !isNaN(parseFloat(text))) {
-            sum += parseFloat(text);
+          const num = parseFloat(text);
+          if (!isNaN(num)) {
+            sum += num;
           }
         }
       });
 
-      document.getElementById('total').textContent = '$' + sum.toLocaleString(undefined, {minimumFractionDigits: 0});
+      document.getElementById('total').textContent = 
+        '$' + sum.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+    }
+
+    // Run on load
+    document.addEventListener('DOMContentLoaded', () => {
+      askForPassword();       // password gate
+      calculateTotal();       // update total
     });
   </script>
 </body>
