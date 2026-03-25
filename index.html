@@ -1,228 +1,176 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Monthly Expenses Tracker</title>
-  <style>
-    :root {
-      --bg: #0f172a;
-      --card: #1e293b;
-      --text: #e2e8f0;
-      --accent: #38bdf8;
-      --highlight: #0ea5e9;
-      --border: #334155;
-      --total-bg: #0c4a6e;
-    }
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    body {
-      font-family: 'Segoe UI', system-ui, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      padding: 1.5rem 1rem;
-      line-height: 1.5;
-    }
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-    }
-    header {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-    h1 {
-      font-size: clamp(1.8rem, 6vw, 2.4rem);
-      margin-bottom: 0.4rem;
-      background: linear-gradient(90deg, #38bdf8, #0ea5e9);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .subtitle {
-      color: #94a3b8;
-      font-size: 1rem;
-    }
-
-    .card {
-      background: var(--card);
-      border-radius: 1rem;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-      border: 1px solid var(--border);
-      overflow: hidden;
-      margin-bottom: 1.5rem;
-    }
-
-    .table-wrapper {
-      max-height: 55vh;           /* ← scrollable area */
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch; /* smooth scrolling on iOS */
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    th, td {
-      padding: 1rem 1.25rem;
-      text-align: left;
-      border-bottom: 1px solid var(--border);
-    }
-    th {
-      background: #172554;
-      color: var(--accent);
-      font-weight: 600;
-      text-transform: uppercase;
-      font-size: 0.85rem;
-      letter-spacing: 0.04em;
-      position: sticky;
-      top: 0;
-      z-index: 2;
-    }
-    tr:hover {
-      background: rgba(56, 189, 248, 0.07);
-    }
-    .total-row {
-      font-weight: bold;
-      background: var(--total-bg);
-      position: sticky;
-      bottom: 0;
-      z-index: 1;
-    }
-    .total-row td {
-      padding: 1.2rem 1.25rem;
-    }
-    .total-label {
-      text-align: right;
-    }
-    .total-amount {
-      color: #f0f9ff;
-      font-size: 1.35rem;
-    }
-    .category {
-      color: #94a3b8;
-      font-size: 0.92rem;
-    }
-
-    /* Scrollbar styling */
-    .table-wrapper::-webkit-scrollbar {
-      width: 7px;
-    }
-    .table-wrapper::-webkit-scrollbar-track {
-      background: #0f172a;
-    }
-    .table-wrapper::-webkit-scrollbar-thumb {
-      background: #475569;
-      border-radius: 4px;
-    }
-
-    @media (max-width: 600px) {
-      body { padding: 1rem 0.8rem; }
-      th, td { padding: 0.9rem 1rem; font-size: 0.96rem; }
-      .total-row td { padding: 1.1rem 1rem; }
-      .total-amount { font-size: 1.25rem; }
-      h1 { margin-bottom: 0.3rem; }
-    }
-  </style>
-</head>
-<body>
-
-  <div class="container">
-    <header>
-      <h1>Monthly Expenses</h1>
-      <p class="subtitle">Tracking recurring costs – February 2026</p>
-    </header>
-
-    <div class="card">
-      <div class="table-wrapper">
-        <table>
-          <thead>
-            <tr>
-              <th>Expense</th>
-              <th>Amount (AUD)</th>
-            </tr>
-          </thead>
-          <tbody id="expenses">
-            <tr><td>House (mortgage/repayments)</td><td>3800</td></tr>
-            <tr><td>Mustang (loan/payment)</td><td>1248</td></tr>
-            <tr><td>Nissan (loan/payment)</td><td>1096</td></tr>
-            <tr><td>City of Swan (council rates?)</td><td>216</td></tr>
-            <tr><td>Car registrations (approx.)</td><td>220</td></tr>
-            <tr><td>Plenti (house battery loan)</td><td>196</td></tr>
-            <tr><td>Latitude Credit Card</td><td>300</td></tr>
-            <tr><td>Nissan insurance</td><td>136</td></tr>
-            <tr><td>Qantas Health insurance (ZAC)</td><td>140</td></tr>
-            <tr><td>HBF Health insurance (NAN)</td><td>124</td></tr>
-            <tr><td>Allianz Insurance (Mustang)</td><td>176</td></tr>
-            <tr><td>RAC (house)</td><td>101</td></tr>
-            <tr><td>Another RAC (life or BMW?)</td><td>24</td></tr>
-            <tr><td>RSL lotto</td><td>30</td></tr>
-            <tr><td>Grok subscription</td><td>45</td></tr>
-            <tr><td>WiFi (Node1)</td><td>94</td></tr>
-            <tr><td>WaterCorp</td><td>160</td></tr>
-            <tr><td>GAS DIGITAL NETWORK</td><td>10</td></tr>
-            <tr><td>ChatGPT subscription</td><td>30</td></tr>
-            <tr><td>Apple Music</td><td>29</td></tr>
-            <tr><td>Telstra</td><td>291</td></tr>
-            <tr><td>Netflix</td><td>29</td></tr>
-            <tr><td>Microsoft (365?)</td><td>3</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Total stays outside the scroll -->
-      <table style="width:100%; border-collapse:collapse;">
-        <tfoot>
-          <tr class="total-row">
-            <td class="total-label">Monthly Total</td>
-            <td class="total-amount" id="total">$0</td>
-          </tr>
-        </tfoot>
-      </table>
-    </div>
-  </div>
-
-  <script>
-    // Simple client-side password prompt (not secure – just a deterrent)
-    const PASSWORD = "19901126";  // ← CHANGE THIS to whatever you want
-
-    function askForPassword() {
-      let input = prompt("Enter password to view expenses:");
-      if (input !== PASSWORD) {
-        alert("Incorrect password.");
-        document.body.innerHTML = "<div style='text-align:center; padding:4rem; color:#94a3b8;'><h2>Access Denied</h2><p>Refresh to try again.</p></div>";
-        throw new Error("Password failed"); // stop further execution
-      }
-    }
-
-    // Calculate total
-    function calculateTotal() {
-      const rows = document.querySelectorAll('#expenses tr');
-      let sum = 0;
-
-      rows.forEach(row => {
-        const amountCell = row.querySelector('td:nth-child(2)');
-        if (amountCell) {
-          const text = amountCell.textContent.trim();
-          const num = parseFloat(text);
-          if (!isNaN(num)) {
-            sum += num;
-          }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy • Mythic Diary</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Playfair+Display:wght@700&display=swap');
+        
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
         }
-      });
+        .heading {
+            font-family: 'Playfair Display', sans-serif;
+        }
+        .glass {
+            background: rgba(26, 16, 64, 0.85);
+            backdrop-filter: blur(16px);
+        }
+    </style>
+</head>
+<body class="bg-[#0a0a12] text-white min-h-screen">
 
-      document.getElementById('total').textContent = 
-        '$' + sum.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-    }
+<div class="max-w-3xl mx-auto px-6 py-12">
+    
+    <!-- Header -->
+    <div class="flex items-center gap-4 mb-10">
+        <div class="w-12 h-12 bg-gradient-to-br from-amber-400 to-blue-400 rounded-2xl flex items-center justify-center text-3xl shadow-xl">📖✨</div>
+        <div>
+            <h1 class="heading text-4xl font-bold tracking-tight">Mythic Diary</h1>
+            <p class="text-amber-400 text-sm font-medium">Privacy Policy</p>
+        </div>
+    </div>
 
-    // Run on load
-    document.addEventListener('DOMContentLoaded', () => {
-      askForPassword();       // password gate
-      calculateTotal();       // update total
-    });
-  </script>
+    <div class="glass border border-white/10 rounded-3xl p-8 md:p-12 text-[15px] leading-relaxed">
+
+        <p class="text-gray-400 mb-8">Last updated: 25 March 2026</p>
+
+        <h2 class="heading text-2xl font-semibold mb-4">Your Legend Belongs to You Alone.</h2>
+        
+        <p class="mb-8">
+            Mythic Diary was built from the ground up with one principle: 
+            <strong class="text-amber-300">your personal mythology stays on your device.</strong> 
+            We collect almost nothing and share nothing.
+        </p>
+
+        <div class="space-y-10">
+
+            <!-- 1. Information We Collect -->
+            <div>
+                <h3 class="text-xl font-medium mb-3 flex items-center gap-2">
+                    <span class="text-amber-400">1.</span> Information We Collect
+                </h3>
+                <ul class="space-y-4 text-gray-300">
+                    <li class="flex gap-3">
+                        <span class="text-emerald-400 font-medium">✓</span>
+                        <div>
+                            <strong>Your journal entries, mythic rewrites, AR anchors, drawings, and photos</strong> — stored only on your device.
+                        </div>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="text-emerald-400 font-medium">✓</span>
+                        <div>
+                            Optional iCloud sync (via private CloudKit) if you enable it — your data is end-to-end encrypted and Apple cannot read it.
+                        </div>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="text-emerald-400 font-medium">✓</span>
+                        <div>
+                            Device permissions you explicitly grant: Camera (AR Memory Palace), Microphone (voice-to-text), Photos, Location (optional tagging), HealthKit, and Calendar — used only for the features you activate.
+                        </div>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="text-red-400 font-medium">✕</span>
+                        <div class="text-gray-400">
+                            We do <strong>not</strong> collect your name, email, phone number, or any personal identifiers.
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- 2. How We Use It -->
+            <div>
+                <h3 class="text-xl font-medium mb-3 flex items-center gap-2">
+                    <span class="text-amber-400">2.</span> How We Use Your Data
+                </h3>
+                <p class="text-gray-300">
+                    Everything stays on your device to power the experience:
+                </p>
+                <ul class="list-disc list-inside text-gray-300 mt-4 space-y-2">
+                    <li>Apple Intelligence (on-device) to rewrite entries as mythic prose</li>
+                    <li>AR Memory Palace to anchor memories in physical space</li>
+                    <li>Symbol &amp; archetype detection using on-device NaturalLanguage</li>
+                    <li>Daily mythic prompts based on your HealthKit &amp; Calendar context</li>
+                    <li>Streak tracking and legend level system</li>
+                </ul>
+            </div>
+
+            <!-- 3. Data Sharing -->
+            <div>
+                <h3 class="text-xl font-medium mb-3 flex items-center gap-2">
+                    <span class="text-amber-400">3.</span> We Do Not Share Your Data
+                </h3>
+                <p class="text-gray-300">
+                    Mythic Diary does not sell, rent, or share your entries with any third party. 
+                    No analytics, no advertising, no data brokers.
+                </p>
+            </div>
+
+            <!-- 4. Storage &amp; Security -->
+            <div>
+                <h3 class="text-xl font-medium mb-3 flex items-center gap-2">
+                    <span class="text-amber-400">4.</span> Storage &amp; Security
+                </h3>
+                <p class="text-gray-300">
+                    All data is stored locally on your device using SwiftData. 
+                    Optional iCloud sync uses Apple’s private CloudKit containers — only you can access it. 
+                    We cannot read your journal, even if we wanted to.
+                </p>
+            </div>
+
+            <!-- 5. Your Rights -->
+            <div>
+                <h3 class="text-xl font-medium mb-3 flex items-center gap-2">
+                    <span class="text-amber-400">5.</span> Your Rights
+                </h3>
+                <p class="text-gray-300">
+                    You can delete any entry or the entire app at any time — all your data is removed from your device. 
+                    To delete iCloud data, simply turn off iCloud sync and delete the app.
+                </p>
+            </div>
+
+            <!-- 6. Children -->
+            <div>
+                <h3 class="text-xl font-medium mb-3 flex items-center gap-2">
+                    <span class="text-amber-400">6.</span> Children’s Privacy
+                </h3>
+                <p class="text-gray-300">
+                    Mythic Diary is rated 4+ and does not knowingly collect data from children under 13. 
+                    All features are designed for personal, private use.
+                </p>
+            </div>
+
+            <!-- 7. Changes -->
+            <div>
+                <h3 class="text-xl font-medium mb-3 flex items-center gap-2">
+                    <span class="text-amber-400">7.</span> Changes to This Policy
+                </h3>
+                <p class="text-gray-300">
+                    We may update this policy occasionally. The date at the top will always show the latest version. 
+                    Continued use of the app means you accept the updated policy.
+                </p>
+            </div>
+
+        </div>
+
+        <!-- Contact -->
+        <div class="mt-12 pt-8 border-t border-white/10 text-center">
+            <p class="text-sm text-gray-400 mb-2">Questions about your privacy?</p>
+            <a href="mailto:privacy@mythicdiary.app" 
+               class="inline-flex items-center gap-2 text-amber-400 hover:text-amber-300 transition-colors">
+                ✉️ privacy@mythicdiary.app
+            </a>
+            <p class="text-xs text-gray-500 mt-8">
+                Made with care in Perth, Western Australia<br>
+                © 2026 Zac Lea — Mythic Diary
+            </p>
+        </div>
+
+    </div>
+
+</div>
+
 </body>
 </html>
